@@ -18,14 +18,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     server.vm.hostname = "slave1.pg"
     server.vm.network "private_network", ip: "192.168.4.3"
 
-    server.vm.provision "shell", path: "scripts/slave.sh", args: PG_DATABASE_NAME
+    server.vm.provision "shell", path: "scripts/slave.sh", args: "PG_DATABASE_NAME slave1"
   end
 
   config.vm.define "slave2" do |server|
     server.vm.hostname = "slave2.pg"
     server.vm.network "private_network", ip: "192.168.4.4"
 
-    server.vm.provision "shell", path: "scripts/slave.sh", args: PG_DATABASE_NAME
+    server.vm.provision "shell", path: "scripts/slave.sh", args: "PG_DATABASE_NAME slave2"
   end
 
 

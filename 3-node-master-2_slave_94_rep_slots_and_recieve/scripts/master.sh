@@ -20,10 +20,21 @@ cd /database
 
 sudo -u postgres -H sh -c "psql -c 'CREATE USER rep REPLICATION LOGIN CONNECTION LIMIT 4;'"
 
+
 cp /vagrant/master/pg_hba.conf     /database/pg_hba.conf
 cp /vagrant/master/postgresql.conf /database/postgresql.conf
 
 chown postgres:postgres /database/pg_hba.conf
 chown postgres:postgres /database/postgresql.conf
+
+/etc/init.d/postgresql-9.4 restart
+
+slave_list=("'slave1'" "'slave2'")
+
+for i in "${slave_list[@]}"
+  do
+    echo $i
+    sudo -u postgres -H sh -c "psql -c 'SELECT 1 FROM pg_create_physical_replication_slot('\''$i'\'');'"
+  done
 
 /etc/init.d/postgresql-9.4 restart

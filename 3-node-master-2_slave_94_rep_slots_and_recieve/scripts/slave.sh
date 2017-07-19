@@ -18,6 +18,8 @@ ln -s /var/lib/pgsql/9.4/data /database
 cd /database
 
 echo "trigger_file = '/tmp/postgresql.trigger.5432'" >> /database/recovery.conf
+echo "primary_slot_name = '$2'" >> /database/recovery.conf
+
 
 chown postgres:postgres -R /var/lib/pgsql/9.4/data
 
