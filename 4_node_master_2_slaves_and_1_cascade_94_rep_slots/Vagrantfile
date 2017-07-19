@@ -1,0 +1,38 @@
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+PG_DATABASE_NAME = "pgdb1"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "centos65-x86_64-20140116"
+
+  config.vm.define "master", primary: true do |server|
+    server.vm.hostname = "master.pg"
+    server.vm.network "private_network", ip: "192.168.4.2"
+
+    server.vm.provision "shell", path: "scripts/master.sh", args: PG_DATABASE_NAME
+  end
+
+  config.vm.define "slave1" do |server|
+    server.vm.hostname = "slave1.pg"
+    server.vm.network "private_network", ip: "192.168.4.3"
+
+    server.vm.provision "shell", path: "scripts/slave.sh", args: "PG_DATABASE_NAME slave1"
+  end
+
+  config.vm.define "slave2" do |server|
+    server.vm.hostname = "slave2.pg"
+    server.vm.network "private_network", ip: "192.168.4.4"
+
+    server.vm.provision "shell", path: "scripts/cascade_slave.sh", args: "PG_DATABASE_NAME slave2"
+  end
+
+  config.vm.define "slave3" do |server|
+    server.vm.hostname = "slave3.pg"
+    server.vm.network "private_network", ip: "192.168.4.5"
+
+    server.vm.provision "shell", path: "scripts/downstream_slave.sh", args: "PG_DATABASE_NAME slave3"
+  end
+
+end
