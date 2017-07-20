@@ -1,3 +1,0 @@
-Testing failover to one of 2 slaves and reattaching to the new master.
-
-See http://philipmcclarence.com/failover-testing-of-a-postgres-cluster/ for a tutorial on this.
