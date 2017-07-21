@@ -1,4 +1,4 @@
-# Hot Standby Master and 2 Slaves Replication on PostgreSQL
+# Hot Standby Master and 2 Slaves using replication slots and pg_rexievexlog for Replication on PostgreSQL
 
 
 
@@ -9,6 +9,6 @@ It uses CentOS 6.5 as a base image https://github.com/2creatives/vagrant-centos/
 ```shell
 vagrant box add centos65-x86_64-20140116 https://github.com/2creatives/vagrant-centos/releases/download/v6.5.3/centos65-x86_64-20140116.box
 git clone https://github.com/philmcc/postgres_clusters.git
-cd postgres_clusters/postgres94/3-node-master-2_slave_94
+cd postgres_clusters/postgres10/3-node-master-2_slave_10_rep_slots_and_recieve
 vagrant up
 ```

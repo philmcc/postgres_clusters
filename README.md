@@ -3,4 +3,9 @@
 Postgres 9.4
 2 node Hot standby replication
 3 node hot standby replication
-3 node hot standby replication using replication slots and pg_recievexlog
+3 node hot standby replication using replication slots
+
+
+Postgres 10 (beta2)
+2 node Hot standby replication
+3 node hot standby replication using replication slots
