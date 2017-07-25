@@ -27,6 +27,6 @@ echo "export PATH=$PATH:/usr/pgsql-9.6/bin" >> /var/lib/pgsql/.bash_profile
 
 sudo -u postgres -H sh -c "psql -h 192.168.4.2 -Upostgres -c 'create database pgbench_db;'"
 
-sudo -u postgres pgbench -i -U postgres -h 192.168.4.2 pgbench_db
-pgbench -c 4 -S -t 2000 -U postgres -h 192.168.4.2 pgbench_db
-pgbench -c 4 -t 2000 -U postgres -h 192.168.4.2 pgbench_db
+sudo -su postgres -H sh -c "/usr/pgsql-9.6/bin/pgbench -i -U postgres -h 192.168.4.2 pgbench_db"
+sudo -su postgres -H sh -c "/usr/pgsql-9.6/bin/pgbench -c 4 -S -t 2000 -U postgres -h 192.168.4.2 pgbench_db"
+sudo -su postgres -H sh -c "/usr/pgsql-9.6/bin/pgbench -c 4 -t 2000 -U postgres -h 192.168.4.2 pgbench_db"
