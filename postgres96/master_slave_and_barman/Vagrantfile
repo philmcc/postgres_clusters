@@ -49,20 +49,20 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 ###########################
 ###########################
 
-  config.vm.define "PoWA" do |server|
-    server.vm.hostname = "PoWA.pg"
-    server.vm.network "private_network", ip: "192.168.4.6"
-    config.vm.network "forwarded_port", guest: 8888, host: 8881
-    server.vm.provision "shell", path: "scripts/PoWA.sh", args: "PG_DATABASE_NAME PoWA"
-  end
+
 
 
 
   config.vm.define "pgbench" do |server|
-    server.vm.hostname = "pgbench.pg"
-    server.vm.network "private_network", ip: "192.168.4.7"
+    server.vm.hostname = "pgbench"
+    server.vm.network "private_network", ip: "192.168.4.6"
     server.vm.provision "shell", path: "scripts/pgbench.sh", args: "PG_DATABASE_NAME pgbench"
   end
-
+  config.vm.define "PoWA" do |server|
+    server.vm.hostname = "PoWA"
+    server.vm.network "private_network", ip: "192.168.4.7"
+    config.vm.network "forwarded_port", guest: 8888, host: 8881
+    server.vm.provision "shell", path: "scripts/PoWA.sh", args: "PG_DATABASE_NAME PoWA"
+  end
 
 end
