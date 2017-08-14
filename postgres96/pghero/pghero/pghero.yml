@@ -1,5 +1,5 @@
 databases:
   primary:
-    url: postgres://pghero:pghero@localhost:5432/pgbench_db
+    url: postgres://pghero:pghero@192.168.4.2:5432/pgbench_db
   replica:
     url: postgres://pghero:pghero@192.168.4.3:5432/pgbench_db

@@ -12,8 +12,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "master", primary: true do |server|
     server.vm.hostname = "master.pg"
     server.vm.network "private_network", ip: "192.168.4.2"
-    config.vm.network "forwarded_port", guest: 3001, host: 3002,
-      auto_correct: true
     server.vm.provision "shell", path: "scripts/master.sh", args: "PG_DATABASE_NAME SLAVE_LIST"
   end
 
@@ -25,11 +23,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
 
-  config.vm.define "pgbench1" do |server|
+  config.vm.define "pghero" do |server|
     server.vm.hostname = "pgbench1.pg"
     server.vm.network "private_network", ip: "192.168.4.15"
-
-    server.vm.provision "shell", path: "scripts/pgbench.sh", args: "PG_DATABASE_NAME pgbench"
+    config.vm.network "forwarded_port", guest: 3001, host: 3002,
+          auto_correct: true
+    server.vm.provision "shell", path: "scripts/pghero.sh", args: "PG_DATABASE_NAME pghero"
   end
 
 end
