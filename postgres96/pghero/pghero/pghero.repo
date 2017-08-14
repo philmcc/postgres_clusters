@@ -1,0 +1,4 @@
+[pghero]
+name=Repository for pghero/pghero application.
+baseurl=https://rpm.packager.io/gh/pghero/pghero/centos7/master
+enabled=1
