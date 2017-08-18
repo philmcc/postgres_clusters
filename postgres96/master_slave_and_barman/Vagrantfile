@@ -34,17 +34,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 #OR
 ####
 
-  #config.vm.define "slave2" do |server|
-  #  server.vm.hostname = "slave2.pg"
-  #  server.vm.network "private_network", ip: "192.168.4.4"
-  #  server.vm.provision "shell", path: "scripts/cascade_slave.sh", args: "PG_DATABASE_NAME slave2"
-  #end
+  config.vm.define "slave2" do |server|
+    server.vm.hostname = "slave2.pg"
+    server.vm.network "private_network", ip: "192.168.4.4"
+    server.vm.provision "shell", path: "scripts/cascade_slave.sh", args: "PG_DATABASE_NAME slave2"
+  end
 
-  #config.vm.define "slave3" do |server|
-  #  server.vm.hostname = "slave3.pg"
-  #  server.vm.network "private_network", ip: "192.168.4.5"
-  #  server.vm.provision "shell", path: "scripts/downstream_slave.sh", args: "PG_DATABASE_NAME slave3"
-  #end
+  config.vm.define "slave3" do |server|
+    server.vm.hostname = "slave3.pg"
+    server.vm.network "private_network", ip: "192.168.4.5"
+    server.vm.provision "shell", path: "scripts/downstream_slave.sh", args: "PG_DATABASE_NAME slave3"
+  end
 
 ###########################
 ###########################
@@ -58,6 +58,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     server.vm.network "private_network", ip: "192.168.4.6"
     server.vm.provision "shell", path: "scripts/pgbench.sh", args: "PG_DATABASE_NAME pgbench"
   end
+  
   config.vm.define "PoWA" do |server|
     server.vm.hostname = "PoWA"
     server.vm.network "private_network", ip: "192.168.4.7"
