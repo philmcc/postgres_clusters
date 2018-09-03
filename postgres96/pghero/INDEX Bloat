@@ -1,0 +1,64 @@
+Identifying and clearing INDEX BLOAT in Postgres
+
+
+Indexes in postgres will over time become bloated with old data as the underlying table is updated. This bloat inflates the size of the database on disk unnecessarily but also slows queries down as ther is more data to search through for each query. Pushing an index to another level results in a dramatic increase in search times as well.
+
+
+Identifying Index Bloat.
+
+This can be found through querying the database statistics. For examples see here:
+https://wiki.postgresql.org/wiki/Show_database_bloat
+and here:
+https://www.keithf4.com/checking-for-postgresql-bloat/
+
+We now have a dashboard that can show and keep track of this across all databsaes:
+
+For example:
+http://db-pghero301.ca2prd:3001/tii-master/index_bloat
+
+
+Clearing index bloat.
+
+If the database was not being used then the fastest way to clear this up would be to REINDEX the index. However this LOCKS THE TABLE against writes while the operation runs and so should not be done on a live system.
+
+The safe and recommended way to perform this operation is to create a replacement index, drop the old one and rename the new one to the old name. This ensures that there is always a useable index in place and avoids locking the table. It is however slower to create the new index because the system has to perform multiple passes to ensure that new changes have been captured.
+https://blog.2ndquadrant.com/create-index-concurrently/
+
+The process is as follows:
+
+CREATE INDEX CONCURRENTLY new_index ...;
+ANALYZE table;
+DROP INDEX CONCURRENTLY index;
+ANALYZE table;
+ALTER INDEX new_index RENAME TO index;
+
+
+Once started, this whole process should be followed to ensure that there is no duplication.
+Ideally, once the new index is created, the other steps should be ran as fast as possible.
+
+Procedure.
+
+The first statement can take quite some time to complete and under ideal circumstances, the subsequent steps should be executed straight away so it should all be done in one go.
+
+Run in a transaction.
+This means that if any step fails, all of them will be rolled back, so if the create fails, the drop statement will not be ran and it will be as if nothing had happened.
+
+So the process would be:
+
+BEGIN;
+CREATE INDEX CONCURRENTLY new_index ...;
+ANALYZE table;
+DROP INDEX CONCURRENTLY index;
+ANALYZE table;
+ALTER INDEX new_index RENAME TO index;
+COMMIT;
+
+The downside of this is that until the transaction is closed, the database will not be able to clean up around it which can cause serious problems. This is why we have the long running query killer.
+For that reason, it is not necessarily recommended for large and frequently updated tables.
+
+An alternative is to simply paste the full sequence of commands into psql.
+
+This should be done in screen to minimize the chances of the connection breaking, but if you need to cancel the operation during the create, you can press CTRL-C and the whole sequence will be stopped.
+
+DO NOT use '\e' to put the whole sequence into the editor and run it that way. If you do it that way and cancel the operation during the create, the subsequent operations will still be executed in order resulting in the loss of an index.
+This is what happened on the 7-Sep-2017

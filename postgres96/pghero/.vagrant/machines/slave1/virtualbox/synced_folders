@@ -1,0 +1,1 @@
+{"rsync":{"/vagrant":{"type":"rsync","guestpath":"/vagrant","hostpath":"/Users/pmcclarence/philmccgit/postgres_clusters/postgres96/pghero","disabled":false,"__vagrantfile":true,"owner":"vagrant","group":"vagrant"}}}
